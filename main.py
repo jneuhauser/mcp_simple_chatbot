@@ -237,8 +237,8 @@ class LLMClient:
         Raises:
             httpx.RequestError: If the request to the LLM fails.
         """
+        # Grog
         url = "https://api.groq.com/openai/v1/chat/completions"
-
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.api_key}",
@@ -251,6 +251,22 @@ class LLMClient:
             "top_p": 1,
             "stream": False,
             "stop": None,
+        }
+
+        # Ollama /api/chat
+        url = "http://localhost:11434/api/chat"
+        headers = {
+            "Content-Type": "application/json",
+        }
+        payload = {
+            # https://github.com/ollama/ollama/blob/main/docs/api.md#chat-request-with-history
+            "messages": messages,
+            # https://ollama.com/library/qwen2.5-coder:7b
+            #"model": "qwen2.5-coder:7b",
+            "model": "phi4-mini",
+            # https://github.com/ollama/ollama/blob/main/docs/api.md#chat-request-with-tools
+            #"tools": None,
+            "stream": False,
         }
 
         try:
